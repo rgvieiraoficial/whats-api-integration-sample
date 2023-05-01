@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
+import { receiveMessageWebhookController } from '../modules/whatsapp/useCases/receiveMessageWebhook';
 import { verifyWebhookController } from '../modules/whatsapp/useCases/verifyWebhook';
 
 async function whatsappRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
@@ -8,7 +9,7 @@ async function whatsappRoutes(fastify: FastifyInstance, options: FastifyPluginOp
   });
 
   fastify.post('/webhook', (request, reply) => {
-    verifyWebhookController.handle(request, reply);
+    receiveMessageWebhookController.handle(request, reply);
   });
 }
 
