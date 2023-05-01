@@ -37,6 +37,8 @@ class ReceiveMessageWebhookController {
 
     const from = Number(requestBody.entry[0].changes[0].value.messages[0].from); //extract the phone number from the webhook payload
 
+    console.log(requestBody.entry[0].changes[0].value.messages);
+
     const message = requestBody.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
     await this.receiveMessageWebhook.execute({ phone_number_id, from, message });
