@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify';
 
-import { usersRoutes } from './users.routes';
+import { whatsappRoutes } from './whatsapp.routes';
 
 async function appRoutes(fastify: FastifyInstance) {
-  fastify.register(usersRoutes, { prefix: '/users' });
+  fastify.register(whatsappRoutes, { prefix: '/whatsapp' });
 };
 
 export { appRoutes };
