@@ -30,7 +30,7 @@ class ReceiveMessageWebhookController {
 
   constructor(private receiveMessageWebhook: ReceiveMessageWebhookUseCase) { }
 
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  async handle(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {
     const requestBody = request.body as IRequestBody;
 
     const phone_number_id = requestBody.entry[0].changes[0].value.metadata.phone_number_id;
@@ -43,7 +43,7 @@ class ReceiveMessageWebhookController {
 
     await this.receiveMessageWebhook.execute({ phone_number_id, from, message });
 
-    reply.status(200).send();
+    return reply.status(200).send();
   }
 }
 

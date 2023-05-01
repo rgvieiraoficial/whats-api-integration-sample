@@ -6,7 +6,7 @@ interface IRequest {
   message: string;
 }
 
-interface IMessage {
+interface ISendMessageData {
   messaging_product: string;
   to: number;
   text: {
@@ -22,21 +22,19 @@ class ReceiveMessageWebhookUseCase {
 
     const url = `https://graph.facebook.com/v16.0/${phone_number_id}/messages?access_token=${token}`;
 
-    const data: IMessage = {
+    const data: ISendMessageData = {
       messaging_product: "whatsapp",
       to: from,
       text: { body: "Olá, tudo bem?" },
     };
 
-    axios.post<IMessage, AxiosResponse<IMessage>>(url, data)
+    axios.post<ISendMessageData, AxiosResponse<ISendMessageData>>(url, data)
       .then(response => {
         console.log('Response:', response.data);
       })
       .catch((error: AxiosError) => {
         console.error('Error:', error.response?.data ?? error.message);
       });
-
-    console.log(`New messagre from: ${from} - Content: ${message} `);
   }
 }
 

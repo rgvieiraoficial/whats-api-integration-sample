@@ -6,7 +6,7 @@ class VerifyWebhookController {
 
   constructor(private verifyWebhookUseCase: VerifyWebhookUseCase) { }
 
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  async handle(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {
     const mode = request.query["hub.mode"];
     const token = request.query["hub.verify_token"];
     const challenge = request.query["hub.challenge"];
@@ -19,7 +19,6 @@ class VerifyWebhookController {
 
     if (verify) return reply.status(200).send(challenge);
     else return reply.status(403).send();
-
   }
 }
 
