@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { IContactsRepository } from 'modules/whatsapp/repositories/IContactsRepository';
-import { IMessageRepository } from 'modules/messages/repositories/IMessageRepository';
+import { IContactsRepository } from '../../repositories/IContactsRepository';
+import { IMessagesRepository } from '../../../messages/repositories/IMessagesRepository';
 
 interface IRequest {
   name: string;
@@ -22,7 +22,7 @@ class ReceiveWebhookEventUseCase {
 
   constructor(
     private contactsRepository: IContactsRepository,
-    private messageRepository: IMessageRepository
+    private messagesRepository: IMessagesRepository
   ) { }
 
   async execute({ name, phone_number_id, from, message }: IRequest): Promise<void> {
@@ -42,7 +42,7 @@ class ReceiveWebhookEventUseCase {
       contactId = contactAreadyExists.id;
     }
 
-    await this.messageRepository.create({
+    await this.messagesRepository.create({
       user_id: 'wjrlnjefrior564aal587wer',
       contact_id: contactId,
       content: message,
@@ -53,7 +53,7 @@ class ReceiveWebhookEventUseCase {
 
     const url = `https://graph.facebook.com/v16.0/${phone_number_id}/messages?access_token=${token}`;
 
-    await this.messageRepository.create({
+    await this.messagesRepository.create({
       user_id: 'wjrlnjefrior564aal587wer',
       contact_id: contactId,
       content: 'Olá, tudo bem?',
