@@ -9,7 +9,7 @@ class SocketServer {
   private static INSTANCE: SocketServer;
 
   constructor() {
-    const port = Number(process.env.PORT) || 3333;
+    const port = Number(process.env.WS_PORT) || 3333;
 
     this.io = new Server(port, {
       cors: {
