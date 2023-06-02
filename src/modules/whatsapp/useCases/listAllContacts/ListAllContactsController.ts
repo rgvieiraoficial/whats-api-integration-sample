@@ -7,7 +7,7 @@ class ListAllContactsController {
   constructor(private listAllContactsUseCase: ListAllContactsUseCase) { }
 
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {
-    const contacts = this.listAllContactsUseCase.execute();
+    const contacts = await this.listAllContactsUseCase.execute();
 
     return reply.status(200).send({ contacts });
   }
