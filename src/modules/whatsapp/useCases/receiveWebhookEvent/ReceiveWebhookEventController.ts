@@ -21,6 +21,7 @@ interface IRequestBody {
             ],
             messages: [
               {
+                id: string;
                 from: string;
                 text: {
                   body: string;
@@ -48,9 +49,11 @@ class ReceiveWebhookEventController {
 
       const from = Number(requestBody.entry[0].changes[0].value.messages[0].from); //extract the phone number from the webhook payload
 
+      const message_id = requestBody.entry[0].changes[0].value.messages[0].id;
+
       const message = requestBody.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
-      await this.receiveWebhookEvent.execute({ name, phone_number_id, from, message });
+      await this.receiveWebhookEvent.execute({ name, phone_number_id, from, message_id, message });
     }
 
     return reply.status(200).send();

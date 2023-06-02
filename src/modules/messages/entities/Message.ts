@@ -11,6 +11,8 @@ class Message {
 
   position: string;
 
+  whatsapp_message_id: string;
+
   status: number;
 
   created_at: Date;

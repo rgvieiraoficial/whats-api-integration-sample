@@ -18,7 +18,7 @@ class MessagesRepository implements IMessagesRepository {
     return MessagesRepository.INSTANCE;
   }
 
-  async create({ user_id, contact_id, content, position }: ICreateMessageDTO): Promise<Message> {
+  async create({ user_id, contact_id, content, position, whatsapp_message_id }: ICreateMessageDTO): Promise<Message> {
     const message = new Message();
 
     Object.assign(message, {
@@ -26,6 +26,7 @@ class MessagesRepository implements IMessagesRepository {
       contact_id,
       content,
       position,
+      whatsapp_message_id,
       status: 1
     });
 

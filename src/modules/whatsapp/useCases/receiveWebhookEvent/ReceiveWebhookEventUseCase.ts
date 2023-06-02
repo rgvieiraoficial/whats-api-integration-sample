@@ -7,6 +7,7 @@ interface IRequest {
   name: string;
   phone_number_id: number;
   from: number;
+  message_id: string;
   message: string;
 }
 
@@ -16,6 +17,11 @@ interface ISendMessageData {
   text: {
     body: string;
   };
+  messages?: [
+    {
+      id: string;
+    }
+  ]
 }
 
 class ReceiveWebhookEventUseCase {
@@ -25,19 +31,21 @@ class ReceiveWebhookEventUseCase {
     private messagesRepository: IMessagesRepository
   ) { }
 
-  async execute({ name, phone_number_id, from, message }: IRequest): Promise<void> {
+  async execute({ name, phone_number_id, from, message_id, message }: IRequest): Promise<void> {
 
     let contactId = null;
 
     const contactAreadyExists = await this.contactsRepository.findByPhoneNumberId(phone_number_id);
 
     if (!contactAreadyExists) {
-      contactId = await this.contactsRepository.create({
+      const contact = await this.contactsRepository.create({
         name,
         phone_number_id,
         whatsapp_number: from,
         avatar: 'file.png'
       });
+
+      contactId = contact.id;
     } else {
       contactId = contactAreadyExists.id;
     }
@@ -46,19 +54,13 @@ class ReceiveWebhookEventUseCase {
       user_id: 'wjrlnjefrior564aal587wer',
       contact_id: contactId,
       content: message,
-      position: 'left'
+      position: 'left',
+      whatsapp_message_id: message_id
     });
 
     const token = process.env.WHATSAPP_TOKEN;
 
     const url = `https://graph.facebook.com/v16.0/${phone_number_id}/messages?access_token=${token}`;
-
-    await this.messagesRepository.create({
-      user_id: 'wjrlnjefrior564aal587wer',
-      contact_id: contactId,
-      content: 'Olá, tudo bem?',
-      position: 'right'
-    });
 
     const data: ISendMessageData = {
       messaging_product: "whatsapp",
@@ -66,13 +68,15 @@ class ReceiveWebhookEventUseCase {
       text: { body: "Olá, tudo bem?" },
     };
 
-    axios.post<ISendMessageData, AxiosResponse<ISendMessageData>>(url, data)
-      .then(response => {
-        console.log('Response:', response.data);
-      })
-      .catch((error: AxiosError) => {
-        console.error('Error:', error.response?.data ?? error.message);
-      });
+    const response = await axios.post<ISendMessageData, AxiosResponse<ISendMessageData>>(url, data);
+
+    await this.messagesRepository.create({
+      user_id: 'wjrlnjefrior564aal587wer',
+      contact_id: contactId,
+      content: 'Olá, tudo bem?',
+      position: 'right',
+      whatsapp_message_id: response.data.messages[0].id
+    });
   }
 }
 
