@@ -9,7 +9,9 @@ class SocketServer {
   private static INSTANCE: SocketServer;
 
   constructor() {
-    this.io = new Server(3535, {
+    const port = Number(process.env.PORT) || 3333;
+
+    this.io = new Server(port, {
       cors: {
         origin: 'http://localhost:3000',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
