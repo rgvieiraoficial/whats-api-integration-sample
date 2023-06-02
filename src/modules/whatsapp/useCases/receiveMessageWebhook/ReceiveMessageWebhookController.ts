@@ -40,7 +40,7 @@ class ReceiveMessageWebhookController {
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {
     const requestBody = request.body as IRequestBody;
 
-    console.log(requestBody);
+    console.log(requestBody.entry[0].changes);
 
     const name = requestBody.entry[0].changes[0].value.contacts[0].profile.name;
 
