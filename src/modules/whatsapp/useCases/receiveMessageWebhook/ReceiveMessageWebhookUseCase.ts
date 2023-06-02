@@ -1,6 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
+import { IContactsRepository } from 'modules/whatsapp/repositories/IContactsRepository';
+import { IMessageRepository } from 'modules/messages/repositories/IMessageRepository';
+
 interface IRequest {
+  name: string;
   phone_number_id: number;
   from: number;
   message: string;
@@ -16,11 +20,45 @@ interface ISendMessageData {
 
 class ReceiveMessageWebhookUseCase {
 
-  async execute({ phone_number_id, from, message }: IRequest): Promise<void> {
+  constructor(
+    private contactsRepository: IContactsRepository,
+    private messageRepository: IMessageRepository
+  ) { }
+
+  async execute({ name, phone_number_id, from, message }: IRequest): Promise<void> {
+
+    let contactId = null;
+
+    const contactAreadyExists = await this.contactsRepository.findByPhoneNumberId(phone_number_id);
+
+    if (!contactAreadyExists) {
+      contactId = await this.contactsRepository.create({
+        name,
+        phone_number_id,
+        whatsapp_number: from,
+        avatar: 'file.png'
+      });
+    } else {
+      contactId = contactAreadyExists.id;
+    }
+
+    await this.messageRepository.create({
+      user_id: 'wjrlnjefrior564aal587wer',
+      contact_id: contactId,
+      content: message,
+      position: 'left'
+    });
 
     const token = process.env.WHATSAPP_TOKEN;
 
     const url = `https://graph.facebook.com/v16.0/${phone_number_id}/messages?access_token=${token}`;
+
+    await this.messageRepository.create({
+      user_id: 'wjrlnjefrior564aal587wer',
+      contact_id: contactId,
+      content: 'Olá, tudo bem?',
+      position: 'right'
+    });
 
     const data: ISendMessageData = {
       messaging_product: "whatsapp",
