@@ -40,14 +40,12 @@ class ReceiveWebhookEventController {
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {
     const requestBody = request.body as IRequestBody;
 
-    if (requestBody.entry[0].changes[0].value.contacts[0].profile.name) {
+    if (requestBody.entry[0].changes[0].value.contacts[0].profile.name !== undefined) {
       const name = requestBody.entry[0].changes[0].value.contacts[0].profile.name;
 
       const phone_number_id = requestBody.entry[0].changes[0].value.metadata.phone_number_id;
 
       const from = Number(requestBody.entry[0].changes[0].value.messages[0].from); //extract the phone number from the webhook payload
-
-      console.log(requestBody.entry[0].changes[0].value.messages);
 
       const message = requestBody.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
