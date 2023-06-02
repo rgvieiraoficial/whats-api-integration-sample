@@ -41,8 +41,6 @@ class ReceiveWebhookEventController {
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {
     const requestBody = request.body as IRequestBody;
 
-    console.log(requestBody.entry[0].changes[0]);
-
     if (requestBody.entry[0].changes[0].value.contacts) {
       const name = requestBody.entry[0].changes[0].value.contacts[0].profile.name;
 
