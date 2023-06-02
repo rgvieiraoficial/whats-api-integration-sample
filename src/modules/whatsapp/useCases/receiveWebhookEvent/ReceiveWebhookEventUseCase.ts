@@ -2,6 +2,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 
 import { IContactsRepository } from '../../repositories/IContactsRepository';
 import { IMessagesRepository } from '../../../messages/repositories/IMessagesRepository';
+import { SocketServer } from '../../../../socketServer';
 
 interface IRequest {
   name: string;
@@ -28,7 +29,8 @@ class ReceiveWebhookEventUseCase {
 
   constructor(
     private contactsRepository: IContactsRepository,
-    private messagesRepository: IMessagesRepository
+    private messagesRepository: IMessagesRepository,
+    private socketServer: SocketServer
   ) { }
 
   async execute({ name, phone_number_id, from, message_id, message }: IRequest): Promise<void> {
@@ -50,7 +52,7 @@ class ReceiveWebhookEventUseCase {
       contactId = contactAreadyExists.id;
     }
 
-    await this.messagesRepository.create({
+    const clientMessage = await this.messagesRepository.create({
       user_id: 'wjrlnjefrior564aal587wer',
       contact_id: contactId,
       content: message,
@@ -59,6 +61,8 @@ class ReceiveWebhookEventUseCase {
     });
 
     const token = process.env.WHATSAPP_TOKEN;
+
+    this.socketServer.emit('newMessage', clientMessage);
 
     const url = `https://graph.facebook.com/v16.0/${phone_number_id}/messages?access_token=${token}`;
 
@@ -70,13 +74,15 @@ class ReceiveWebhookEventUseCase {
 
     const response = await axios.post<ISendMessageData, AxiosResponse<ISendMessageData>>(url, data);
 
-    await this.messagesRepository.create({
+    const messageResponse = await this.messagesRepository.create({
       user_id: 'wjrlnjefrior564aal587wer',
       contact_id: contactId,
       content: 'Olá, tudo bem?',
       position: 'right',
       whatsapp_message_id: response.data.messages[0].id
     });
+
+    this.socketServer.emit('newMessage', messageResponse);
   }
 }
 

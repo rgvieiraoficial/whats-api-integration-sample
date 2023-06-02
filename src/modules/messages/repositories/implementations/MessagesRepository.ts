@@ -2,7 +2,7 @@ import { Message } from '../../entities/Message';
 import { ICreateMessageDTO, IMessagesRepository } from '../IMessagesRepository';
 
 class MessagesRepository implements IMessagesRepository {
-  private messages: Message[] = [];
+  private messages: Message[];
 
   private static INSTANCE: MessagesRepository;
 
