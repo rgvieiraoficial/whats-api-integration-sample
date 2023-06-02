@@ -29,6 +29,8 @@ class MessagesRepository implements IMessagesRepository {
       status: 1
     });
 
+    this.messages.push(message);
+
     return message;
   }
 
