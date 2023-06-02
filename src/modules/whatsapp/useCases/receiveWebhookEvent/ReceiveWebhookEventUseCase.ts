@@ -18,7 +18,7 @@ interface ISendMessageData {
   };
 }
 
-class ReceiveMessageWebhookUseCase {
+class ReceiveWebhookEventUseCase {
 
   constructor(
     private contactsRepository: IContactsRepository,
@@ -76,4 +76,4 @@ class ReceiveMessageWebhookUseCase {
   }
 }
 
-export { ReceiveMessageWebhookUseCase };
+export { ReceiveWebhookEventUseCase };

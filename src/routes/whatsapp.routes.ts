@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
 import { listAllContactsController } from '../modules/whatsapp/useCases/listAllContacts';
-import { receiveMessageWebhookController } from '../modules/whatsapp/useCases/receiveMessageWebhook';
+import { receiveWebhookEventController } from '../modules/whatsapp/useCases/receiveWebhookEvent';
 import { verifyWebhookController } from '../modules/whatsapp/useCases/verifyWebhook';
 
 async function whatsappRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
@@ -14,7 +14,7 @@ async function whatsappRoutes(fastify: FastifyInstance, options: FastifyPluginOp
   });
 
   fastify.post('/webhook', (request, reply) => {
-    receiveMessageWebhookController.handle(request, reply);
+    receiveWebhookEventController.handle(request, reply);
   });
 }
 
