@@ -1,13 +1,13 @@
 import { ContactsRepository } from '../../repositories/implementations/ContactsRepository';
-import { MessageRepository } from '../../../messages/repositories/implementations/MessageRepository'
+import { MessagesRepository } from '../../../messages/repositories/implementations/MessagesRepository'
 
 import { ReceiveWebhookEventUseCase } from './ReceiveWebhookEventUseCase';
 import { ReceiveWebhookEventController } from './ReceiveWebhookEventController';
 
 const contactsRepository = ContactsRepository.getInstance();
-const messageRepostiroy = MessageRepository.getInstance();
+const messagesRepostiroy = MessagesRepository.getInstance();
 
-const receiveWebhookEventUseCase = new ReceiveWebhookEventUseCase(contactsRepository, messageRepostiroy);
+const receiveWebhookEventUseCase = new ReceiveWebhookEventUseCase(contactsRepository, messagesRepostiroy);
 
 const receiveWebhookEventController = new ReceiveWebhookEventController(receiveWebhookEventUseCase);
 

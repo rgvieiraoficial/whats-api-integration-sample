@@ -7,6 +7,7 @@ interface IRequestBody {
     {
       changes: [
         {
+          response: object,
           value: {
             metadata: {
               phone_number_id: number;
@@ -42,7 +43,7 @@ class ReceiveWebhookEventController {
 
     console.log(requestBody.entry[0].changes[0]);
 
-    if (requestBody.entry[0].changes[0].value.contacts[0].profile.name) {
+    if (requestBody.entry[0].changes[0].response) {
       const name = requestBody.entry[0].changes[0].value.contacts[0].profile.name;
 
       const phone_number_id = requestBody.entry[0].changes[0].value.metadata.phone_number_id;

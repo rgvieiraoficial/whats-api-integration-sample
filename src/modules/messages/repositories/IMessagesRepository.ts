@@ -7,9 +7,9 @@ interface ICreateMessageDTO {
   position: string;
 }
 
-interface IMessageRepository {
+interface IMessagesRepository {
   create({ user_id, contact_id, content, position }: ICreateMessageDTO): Promise<Message>;
   list(): Promise<Message[]>;
 }
 
-export { IMessageRepository, ICreateMessageDTO };
+export { IMessagesRepository, ICreateMessageDTO };

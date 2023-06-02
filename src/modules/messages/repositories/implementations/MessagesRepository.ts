@@ -1,21 +1,21 @@
-import { Message } from 'modules/messages/entities/Message';
-import { ICreateMessageDTO, IMessageRepository } from '../IMessageRepository';
+import { Message } from '../../entities/Message';
+import { ICreateMessageDTO, IMessagesRepository } from '../IMessagesRepository';
 
-class MessageRepository implements IMessageRepository {
+class MessagesRepository implements IMessagesRepository {
   private messages: Message[] = [];
 
-  private static INSTANCE: MessageRepository;
+  private static INSTANCE: MessagesRepository;
 
   private constructor() {
     this.messages = [];
   }
 
-  public static getInstance(): MessageRepository {
-    if (!MessageRepository.INSTANCE) {
-      MessageRepository.INSTANCE = new MessageRepository();
+  public static getInstance(): MessagesRepository {
+    if (!MessagesRepository.INSTANCE) {
+      MessagesRepository.INSTANCE = new MessagesRepository();
     }
 
-    return MessageRepository.INSTANCE;
+    return MessagesRepository.INSTANCE;
   }
 
   async create({ user_id, contact_id, content, position }: ICreateMessageDTO): Promise<Message> {
@@ -39,4 +39,4 @@ class MessageRepository implements IMessageRepository {
   }
 }
 
-export { MessageRepository }
+export { MessagesRepository }

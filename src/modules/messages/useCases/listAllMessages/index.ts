@@ -1,11 +1,11 @@
-import { MessageRepository } from '../../repositories/implementations/MessageRepository';
+import { MessagesRepository } from '../../repositories/implementations/MessagesRepository';
 
 import { ListAllMessagesUseCase } from './ListAllMessagesUseCase';
 import { ListAllMessagesController } from './ListAllMessagesController';
 
-const messageRepository = MessageRepository.getInstance();
+const messagesRepository = MessagesRepository.getInstance();
 
-const listAllMessagesUseCase = new ListAllMessagesUseCase(messageRepository);
+const listAllMessagesUseCase = new ListAllMessagesUseCase(messagesRepository);
 
 const listAllMessagesController = new ListAllMessagesController(listAllMessagesUseCase);
 

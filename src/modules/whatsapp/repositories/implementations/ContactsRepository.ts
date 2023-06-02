@@ -1,4 +1,4 @@
-import { Contact } from 'modules/whatsapp/entities/Contact';
+import { Contact } from '../../entities/Contact';
 import { IContactsRepository, ICreateContactDTO } from '../IContactsRepository';
 
 class ContactsRepository implements IContactsRepository {

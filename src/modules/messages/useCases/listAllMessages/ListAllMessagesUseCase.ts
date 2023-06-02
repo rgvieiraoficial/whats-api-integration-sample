@@ -1,9 +1,9 @@
-import { IMessageRepository } from '../../repositories/IMessageRepository';
+import { IMessagesRepository } from '../../repositories/IMessagesRepository';
 
 class ListAllMessagesUseCase {
 
   constructor(
-    private messagesRepository: IMessageRepository
+    private messagesRepository: IMessagesRepository
   ) { }
 
   async execute() {
